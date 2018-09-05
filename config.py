@@ -3,18 +3,33 @@
 # Mask Size taken is 128 * 128
 
 class Config:
-    def __init__(self,total = 256,mask = 128):
-        self._total = total
-        self._mask = mask
-    
-    def configuration(self):
-        batch_size = 16
-        learning_rate = 0.001
-        d_loss_alpha = 0.0004
-        input_size = self._total
-        mask_size = self._mask
-        input_shape = [input_size, input_size, 3]
-        mask_shape = [mask_size, mask_size, 3]
-        hole_min = mask_size // 2
-        hole_max = mask_size // 4 * 3
+    batch_size = 16
+    gpu_num = 0
+    d_loss_alpha = 0.0004
+    learning_rate = 0.001
+
+    @property
+    def input_size(self):
+        return self._input_size
+
+    @input_size.setter
+    def input_size(self, value):
+        self._input_size = value
+        self.input_shape = [value, value, 3]
+
+    @property
+    def mask_size(self):
+        return self._mask_size
+
+    @mask_size.setter
+    def mask_size(self, value):
+        self._mask_size = value
+        self.mask_shape = [value, value, 3]
+        self.hole_min = value // 2
+        self.hole_max = value // 4 * 3
+
+    def __init__(self):
+        self.input_size = 256
+        self.mask_size = 128
+
 
