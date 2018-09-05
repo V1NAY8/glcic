@@ -42,10 +42,12 @@ class SaveGeneratorOutput(keras.callbacks.Callback):
                     image = self.data_generator.denormalize_image(image)
                     cv2.imwrite('./out/epoch{}_{}.png'.format(epoch, i), image)
 
+FORMAT = '%(asctime)-15s %(levelname)s #[%(thread)d] %(message)s'
 logger = logging.getLogger(__name__)
+logging.basicConfig(format=FORMAT, level=logging.INFO)
 logger.info("---Starting Training---")
 
-config = Config().configuration()
+config = Config()
 
 argparser = argparse.ArgumentParser(
     description="Globally and Locally Consistent Image Completion(GLCIC)"
@@ -116,10 +118,7 @@ if args.testimage_path and not args.stage == 2:
 model.fit_generator(train_data_generator,
                     steps_per_epoch=steps_per_epoch,
                     epochs=epochs,
-                    verbose=1,
-                    workers=4,
-                    max_queue_size=10,
-                    use_multiprocessing=True,
+                    verbose=1,max_queue_size=10,
                     callbacks=callbacks,
                     validation_data=val_data_generator,
                     validation_steps=5)
